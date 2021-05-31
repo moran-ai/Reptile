@@ -1,0 +1,76 @@
+show databases/dbs;  查看已有数据库
+use dataname; 选择已有数据库
+show tables;  查看表/集合
+show collections; 查看已有集合/表
+db.createCollection('表名');   建表/集合
+db.集合名.drop();  删除集合
+db.dropDatabase(); 删除数据库
+
+mongodb增删改查
+    db.集合名.insert(document)  数据的添加
+    db.集合名.save(document)   如果存在就更新，不存在就添加
+    db.集合名.update(query.update,multi)
+        query:查询条件，类似于sql语句中的update部分的where部分
+        update:更新操作符，类似于sql语句中的update部分的set部分
+        multi:可选，默认是false,表示只更新找到的第一条记录，值为true表示把满足条件的文档全部更新
+    db.集合名.remove(query)  删除数据,query为删除条件
+
+   （一）插入数据
+        ① 创建数据库
+            use schoo;
+
+        ② 创建集合表
+            db.createCollection('student');
+
+        ③ 插入一条数据
+            db.student.insert({'name': '李四', 'age': 20});
+
+        ④ 插入多条数据
+            db.student.insert([{},{},{}])
+
+        ⑤ 循环插入多条数据  (js写法)
+            for (i=20;i<25;i++){db.student.insert({'name':'李四','age': 30})}
+
+        db.student.save({'_id': 1, 'name': 'ad', 'age': 34})
+
+        insert 与save的区别：
+            1.如果集合中id相同，insert插入数据报错
+            1.如果集合中id相同，save更新数据
+            1.如果集合中id不相同，save插入数据
+
+        更新数据
+            更新全局age
+                db.student.update({'name': '李四'}, {'age': 20})
+            更新一个age
+                db.student.update({'name': '李四'}, {$set:{'age': 20}})
+            更新全局的age
+                db.student.update({'name': '李四'}, {$set:{'age': 20}}, {'multi': true})
+
+        删除操作
+        将姓名为李四的数据全部删除
+            db.student.remove({'name': '李四'})
+        删除一条数据为李四的
+            db.student.remove({'name': '李四'}, {justOne:true})
+        将集合中的所有数据删除
+            db.student.remove({})
+
+       查询
+            查询所有数据
+                db.student.find()
+            查询name为李四的数据
+                db.student.find({'name': '李四'})
+            查询name为李三的第一条数据
+                db.student.findOne({'name': '李三'})
+            查询年龄小于30 $lt
+                db.student.find({'age': {'$lt': 30}})
+            $lte 小于等于
+            $gte 大于等于
+
+            查询年龄在20到30岁之间  $in   $nin  不在范围内   $or 或者
+            db.student.find({'age': {'$in': [20, 30]}})
+
+       模糊匹配
+       查询name中含有李的数据
+            db.student.find({'name': /李/})
+       查询name中含有四的数据  正则表达式
+       db.student.find({'name': {$regex:'四'}})
