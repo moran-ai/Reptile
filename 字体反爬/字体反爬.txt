@@ -1,0 +1,15 @@
+1.查找字体
+    网站的开发者会把字体编程成base64的方式，可以到网页中找到@face_face属性，然后获取里面的base64代码
+    ，再用python进行解码，然后保存到本地
+    如果没有试用base64,还有一种方式，就是直接把字体复制到服务器上，然后前端通过@font-face中的
+    url函数进行加载
+
+2.分析字体
+    需要将字体转换为xml文件，然后查看其中的cmap和glyf中的属性。其中cmap存储的是code和name的映射，
+    而glyf下存储的是每个name下的字体绘制规则
+
+    安装模块
+        pip install fontTools
+
+    FontCreat 软件
+

@@ -1,0 +1,1 @@
+print('-/天'.encode('utf-8'))
